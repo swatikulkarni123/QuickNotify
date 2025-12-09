@@ -1,4 +1,8 @@
-# **QuickNotify – Jetpack Compose Toast Library**  
+# **QuickNotify – Jetpack Compose Toast Library**
+
+
+[![](https://jitpack.io/v/swatikulkarni123/QuickNotify.svg)](https://jitpack.io/#swatikulkarni123/QuickNotify)
+
 
 A **lightweight Jetpack Compose library** for showing **toast-style notifications** using a **global overlay**.  
 **Simple API**, customizable UI, and works across all Activities without setup.
@@ -41,7 +45,7 @@ dependencyResolutionManagement {
 
 ```gradle
 dependencies {
-    implementation("com.github.swatikulkarni123:ToastImageLibrary:1.0.0")
+    implementation("com.github.swatikulkarni123:QuickNotify:1.0.0")
 }
 ````
 ## 🛠 Usage

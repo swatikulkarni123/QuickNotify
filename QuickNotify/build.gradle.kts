@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "com.swa.quicknotify"
-version = "1.0.0"
+version = "1.0.1"
 
 android {
     namespace = "com.swa.quicknotify"
@@ -66,7 +66,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.swa.quicknotify"
             artifactId = "quicknotify"
-            version = "1.0.0"
+            version = "1.0.1"
 
             afterEvaluate {
                 from(components["release"])
@@ -77,7 +77,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/swatikulkarni123/ToastImageLibrary")
+            url = uri("https://maven.pkg.github.com/swatikulkarni123/QuickNotify")
             credentials {
                 username = githubProperties["gpr.user"] as String
                 password = githubProperties["gpr.token"] as String
