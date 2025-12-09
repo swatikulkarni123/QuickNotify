@@ -1,9 +1,9 @@
-import java.util.Properties
-
-// Load GitHub credentials from a local file (ignored by git)
-val githubProperties = Properties().apply {
-    load(rootProject.file("github.properties").inputStream())
-}
+//import java.util.Properties
+//
+//// Load GitHub credentials from a local file (ignored by git)
+//val githubProperties = Properties().apply {
+//    load(rootProject.file("github.properties").inputStream())
+//}
 
 plugins {
     alias(libs.plugins.android.library)
@@ -78,11 +78,11 @@ publishing {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/swatikulkarni123/QuickNotify")
-            credentials {
-                username = githubProperties["gpr.user"] as String
-                password = githubProperties["gpr.token"] as String
-            }
-            println("Loaded GitHub User: " + githubProperties["gpr.user"])
+//            credentials {
+//                username = githubProperties["gpr.user"] as String
+//                password = githubProperties["gpr.token"] as String
+//            }
+            //println("Loaded GitHub User: " + githubProperties["gpr.user"])
         }
     }
 }
