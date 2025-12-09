@@ -23,11 +23,24 @@ A **lightweight Jetpack Compose library** for showing **toast-style notification
 ---
 
 ## 📦 **Installation**
-Add to your **Module-level `build.gradle`**:
+**Step 1: Add JitPack repository**
+
+Add it in your `settings.gradle.kts` at the end of repositories:
+
+```kotlin
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+```
+
 
 ```gradle
 dependencies {
-    implementation("com.swa.quicknotify:quicknotify:1.0.0")
+    implementation("com.github.swatikulkarni123:ToastImageLibrary:1.0.0")
 }
 ````
 ## 🛠 Usage
