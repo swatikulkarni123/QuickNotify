@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "com.swa.quicknotify"
-version = "1.0.2"
+version = "1.0.3"
 
 android {
     namespace = "com.swa.quicknotify"
@@ -66,7 +66,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.swa.quicknotify"
             artifactId = "quicknotify"
-            version = "1.0.2"
+            version = "1.0.3"
 
             afterEvaluate {
                 from(components["release"])

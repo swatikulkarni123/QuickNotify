@@ -1,36 +1,37 @@
-# **QuickNotify – Jetpack Compose Toast Library**
-
+# **QuickNotify – Jetpack Compose Toast, Snackbar & Dialog Library**
 
 [![](https://jitpack.io/v/swatikulkarni123/QuickNotify.svg)](https://jitpack.io/#swatikulkarni123/QuickNotify)
 
+A **lightweight Jetpack Compose library** for showing  
+**Toast-style notifications**, **Snackbars**, and **Custom Dialogs**  
+using a **global overlay** with **zero setup**.
 
-A **lightweight Jetpack Compose library** for showing **toast-style notifications** using a **global overlay**.  
-**Simple API**, customizable UI, and works across all Activities without setup.
-Shows toast-style popups, snack-like messages, and small alerts over any Activity using a global Compose overlay.
+Works across all Activities without needing a host Composable.
 
 ---
 
 ## 🚀 **Features**
-- **Global overlay** attached automatically using `App Startup`  
-- **Jetpack Compose** based toast UI  
-- **Custom message, icon, and duration**  
-- **Coroutine-based visibility handling**  
-- **Easy one-line usage**
-
-  ## ✅ Benefits
-- **No need to write or predefine**: Toasts work automatically across all Activities
-- **Lightweight**: Minimal dependencies, fast performance
-- **Customizable**: Change message, icon, and duration
-- **Composable-friendly**: Fully works in Jetpack Compose projects
-- **Reusable**: Can be used in multiple modules or projects easily
-- **Clean API**: One-line notification display
+- Global overlay via **App Startup**
+- Jetpack Compose UI — Toast, Snackbar, Dialog
+- Toast with **text + icon + custom duration**
+- Snackbar with ** icon + custom duration **
+- Custom Dialog with:
+    - Header image
+    - Title
+    - Body text
+    - Up to **3 customizable buttons**
+    - Optional **top-right close icon**
+    - Rounded or square corners
+- Coroutine-based visibility handling
+- Works across entire application
 
 ---
 
 ## 📦 **Installation**
-**Step 1: Add JitPack repository**
 
-Add it in your `settings.gradle.kts` at the end of repositories:
+### **Step 1: Add JitPack**
+
+Add in `settings.gradle.kts`:
 
 ```kotlin
 dependencyResolutionManagement {
@@ -42,32 +43,126 @@ dependencyResolutionManagement {
 }
 ```
 
+### **Step 2: Add dependency**
 
 ```gradle
 dependencies {
     implementation("com.github.swatikulkarni123:QuickNotify:1.0.0")
 }
-````
-## 🛠 Usage
-
-### Show a toast
-```kotlin
-QuickNotify.showToast(
-    message = "Hello world!",
-    duration = 2000L
-)
-
-Button(onClick = {
-    QuickNotify.showToast("This is QuickNotify!")
-}) {
-    Text("Show Toast")
-}
 ```
 
-## ⚙️ How it works
-- Automatically initializes via **`QuickNotifyInitializer`**
-- Injects a **ComposeView overlay** into the first launched Activity
-- Hosts toast UI through **`QuickNotifyHostInternal`**
-- Uses **`LaunchedEffect` + coroutine delay** for visibility timing
+---
+
+# 🛠 Usage
 
 ---
+
+## ✅ **1. Toast**
+
+#### Simple toast
+```kotlin
+QuickNotify.showToast("Hello world!")
+```
+
+#### Toast with duration + icon
+```kotlin
+QuickNotify.showToast(
+    message = "Saved successfully",
+    duration = 2500L,
+    icon = Icons.Default.Check
+)
+```
+
+---
+
+## ✅ **2. Snackbar**
+
+#### Basic Snackbar
+```kotlin
+QuickNotify.showSnackbar(
+    message = "No internet connection"
+)
+```
+
+#### Snackbar with icon
+```kotlin
+QuickNotify.showSnackbar(
+    message = "Message sent",
+    icon = Icons.Default.Send
+)
+```
+
+---
+
+## ✅ **3. Custom Dialog**
+
+Shows a fully customizable dialog with an optional **top image**,  
+**title**, **body**, and **up to 3 buttons**.
+
+### Example
+```kotlin
+QuickNotify.showDialog(
+    title = "Delete Item?",
+    body = "This action cannot be undone.",
+    topImage = painterResource(R.drawable.warning),
+
+    btn1Text = "Cancel",
+    btn1Color = Color.Gray,
+    onBtn1Click = { },
+
+    btn2Text = "Delete",
+    btn2Color = Color.Red,
+    onBtn2Click = { /* Delete logic */ }
+)
+```
+
+### Dialog only close button (no action buttons)
+```kotlin
+QuickNotify.showDialog(
+    title = "Info",
+    body = "This is message-only dialog."
+)
+```
+
+This will show a **top-right close icon** automatically.
+
+---
+
+# ⚙️ How it works
+
+- Automatically initializes via `QuickNotifyInitializer`
+- Uses a hidden **global Compose host**
+- Renders Toast/Snackbar/Dialog using:
+    - `QuickNotifyHostInternal`
+    - `QuickNotifyController`
+- Auto-dismiss using coroutine delays
+- Manual dismiss:
+```kotlin
+QuickNotifyController.clear()
+```
+
+---
+
+## 📁 Icons / Resources
+
+If using a close icon, place it here:
+
+```
+your-library-module/
+ └── src/
+      └── main/
+           └── res/
+                └── drawable/
+                     └── ic_close.xml
+```
+
+Use inside dialog:
+```kotlin
+painterResource(R.drawable.ic_close)
+```
+
+---
+
+## 📜 License
+
+MIT
