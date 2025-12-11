@@ -1,4 +1,4 @@
-# **QuickNotify – Jetpack Compose Toast, Snackbar & Dialog Library**
+## QuickNotify – Jetpack Compose Library for Toast, Snackbar, Dialog & Custom Overlay UI
 
 [![](https://jitpack.io/v/swatikulkarni123/QuickNotify.svg)](https://jitpack.io/#swatikulkarni123/QuickNotify)
 
@@ -13,15 +13,18 @@ Works across all Activities without needing a host Composable.
 ## 🚀 **Features**
 - Global overlay via **App Startup**
 - Jetpack Compose UI — Toast, Snackbar, Dialog
-- Toast with **text + icon + custom duration**
-- Snackbar with ** icon + custom duration **
-- Custom Dialog with:
+- **Toast** with **text + icon + custom duration**
+- **Snackbar** with ** icon + custom duration **
+- **Dialog** with:
     - Header image
     - Title
     - Body text
     - Up to **3 customizable buttons**
     - Optional **top-right close icon**
     - Rounded or square corners
+- **Custom Overlay** for showing any Composable UI globally:
+    * Full control over content, alignment, and appearance.
+    * Manual or automatic dismissal.
 - Coroutine-based visibility handling
 - Works across entire application
 
@@ -94,7 +97,7 @@ QuickNotify.showSnackbar(
 
 ---
 
-## ✅ **3. Custom Dialog**
+## ✅ **3. Dialog**
 
 Shows a fully customizable dialog with an optional **top image**,  
 **title**, **body**, and **up to 3 buttons**.
@@ -125,6 +128,43 @@ QuickNotify.showDialog(
 ```
 
 This will show a **top-right close icon** automatically.
+
+
+## ✨ **4. Custom Overlay / Custom View**
+
+Use `showOverlay` to display **any Composable UI** in a global overlay. This is ideal for custom alerts, banners, or full-screen loaders.
+
+The `content` lambda provides a `dismiss: () -> Unit` function, which you must call to manually dismiss the overlay.
+
+### Example: Custom Success Alert
+```kotlin
+QuickNotify.showOverlay(
+    overlayAlignment = Alignment.Center, // Position your custom view
+    autoCancel = false, // Set to true to dismiss after default duration (2000ms) or 'duration'
+    content = { dismiss -> // 'dismiss' function to manually close the overlay
+        Card(
+            // ... your custom UI for the alert ...
+            shape = RoundedCornerShape(20.dp),
+            // ...
+        ) {
+            Row(
+                // ... your alert content ...
+            ) {
+                // ...
+                // Example of a dismiss button inside the custom view
+                Icon(
+                    // ...
+                    modifier = Modifier.size(20.dp).clickable {
+                        dismiss() // **Crucial: Call dismiss() to close the overlay**
+                        // You can also show another QuickNotify message here
+                        // QuickNotify.showToast("Clicked") 
+                    }
+                )
+            }
+        }
+    }
+)
+```
 
 ---
 

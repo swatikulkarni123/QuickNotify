@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import com.swa.quicknotify.custom_overlay.showCustomView
 import com.swa.quicknotify.dialog.QuickCustomDialog
 import com.swa.quicknotify.snackbar.QuickSnackbar
 import com.swa.quicknotify.toast.QuickToast
@@ -17,21 +18,41 @@ import kotlinx.coroutines.delay
 fun QuickNotifyHostInternal() {
     var isVisible by remember { mutableStateOf(false) }
     var msgs = QuickNotifyController.currentMessage
-    LaunchedEffect(msgs) {
+    LaunchedEffect(msgs.value) {
         isVisible = true
-        if(msgs.value?.kind != QuickNotifyKind.Dialog){
-            delay(msgs.value?.durationMs?:1000)
-            isVisible = false
-            delay(100)
-            QuickNotifyController.clear()
-            msgs.value = null
+        when (msgs.value?.kind) {
+            QuickNotifyKind.Toast, QuickNotifyKind.Snackbar -> {
+                delay(msgs.value?.durationMs ?: 2000)
+                isVisible = false
+                delay(100)
+                QuickNotifyController.clear()
+            }
+
+            QuickNotifyKind.Overlay -> {
+                if (msgs.value?.overlayAutoCancel == true) {
+                    delay(msgs.value?.durationMs ?: 2000)
+                    isVisible = false
+                    delay(100)
+                    QuickNotifyController.clear()
+                }
+            }
+
+            else -> {}
         }
     }
 
-    AnimatedVisibility(visible = isVisible && msgs.value!=null) {
+    AnimatedVisibility(
+        visible = isVisible && (msgs.value != null||msgs.value?.overlayContent!=null),
+        enter = msgs.value?.overlayEnter!!,
+        exit = msgs.value?.overlayExit!!
+    ) {
         when (msgs.value?.kind) {
+            QuickNotifyKind.Overlay -> showCustomView(msgs.value)
             QuickNotifyKind.Toast -> QuickToast(message = msgs.value?.text, icon = msgs.value?.icon)
-            QuickNotifyKind.Snackbar -> QuickSnackbar(message = msgs.value?.text?:"", icon = msgs.value?.icon)
+            QuickNotifyKind.Snackbar -> QuickSnackbar(
+                message = msgs.value?.text ?: "",
+                icon = msgs.value?.icon
+            )
             QuickNotifyKind.Dialog ->
                 QuickCustomDialog(
                     onDismiss = { QuickNotifyController.clear() },
@@ -60,6 +81,7 @@ fun QuickNotifyHostInternal() {
                         QuickNotifyController.clear()
                     }
                 )
+
             else -> {}
         }
     }

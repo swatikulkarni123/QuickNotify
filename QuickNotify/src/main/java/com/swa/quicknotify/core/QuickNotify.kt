@@ -1,22 +1,32 @@
 package com.swa.quicknotify.core
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.swa.quicknotify.core.QuickNotifyController.currentMessage
 
 object QuickNotify {
 
     fun showToast(
-        message: String,
+        message: String? = "",
         icon: ImageVector? = null,
-        duration: Long = 2000L
-    ) {
+        duration: Long = 2000L,
+        customUi: (@Composable () -> Unit)? = null,
+        ) {
         QuickNotifyController.show(
             QuickNotifyMessage(
                 text = message,
                 icon = icon,
                 durationMs = duration,
-                kind = QuickNotifyKind.Toast
+                kind = QuickNotifyKind.Toast,
             )
         )
 
@@ -81,6 +91,29 @@ object QuickNotify {
         QuickNotifyOverlay.content.value = {
             QuickNotifyHostInternal()
         }
+    }
+
+    fun showOverlay(
+        duration: Long = 2000,
+        autoCancel: Boolean = false,
+        enter: EnterTransition = fadeIn() + expandIn(),
+        exit: ExitTransition = shrinkOut() + fadeOut(),
+        overlayAlignment: Alignment = Alignment.BottomCenter,
+        content: @Composable (dismiss: () -> Unit) -> Unit,
+    ) {
+        QuickNotifyController.show(
+            QuickNotifyMessage(
+                kind = QuickNotifyKind.Overlay,
+                overlayContent = content,
+                durationMs = duration,
+                overlayAutoCancel = autoCancel,
+                overlayEnter = enter,
+                overlayExit = exit ,
+                overlayAlignment = overlayAlignment
+            )
+        )
+
+        QuickNotifyOverlay.content.value = { QuickNotifyHostInternal() }
     }
 
 }

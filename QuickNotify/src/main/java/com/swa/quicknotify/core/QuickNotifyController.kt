@@ -1,6 +1,14 @@
 package com.swa.quicknotify.core
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -27,6 +35,13 @@ data class QuickNotifyMessage(
     val durationMs: Long = 2000L,
     val kind: QuickNotifyKind = QuickNotifyKind.Toast,
 
+    // Overlay support
+    val overlayContent: (@Composable (dismiss: () -> Unit) -> Unit)? = null,
+    val overlayAutoCancel: Boolean = false,
+    val overlayEnter: EnterTransition = fadeIn() + expandIn(),
+    val overlayExit: ExitTransition = shrinkOut() + fadeOut(),
+    val overlayAlignment: Alignment = Alignment.BottomCenter,
+
     // Dialog params
     val dialogTitle: String? = null,
     val dialogBody: String? = null,
@@ -48,4 +63,4 @@ data class QuickNotifyMessage(
     val onBtn3Click: (() -> Unit)? = null,
 )
 
-enum class QuickNotifyKind { Toast, Snackbar, Dialog }
+enum class QuickNotifyKind { Toast, Snackbar, Dialog, Overlay }
