@@ -32,6 +32,9 @@ Works across all Activities without needing a host Composable.
 - Works across entire application
 
 ---
+### How to Display Toast in Jetpack Compose
+
+To display a toast in Jetpack Compose, you can use the QuickNotify library.
 
 ## 📦 **Installation**
 
