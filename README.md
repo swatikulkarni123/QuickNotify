@@ -6,7 +6,7 @@ QuickNotify helps Android developers easily show **Toast**, **Snackbar**, **Dial
 [![](https://jitpack.io/v/swatikulkarni123/QuickNotify.svg)](https://jitpack.io/#swatikulkarni123/QuickNotify)
 
 A **lightweight Jetpack Compose library** for showing  
-**Toast-style notifications**, **Snackbars**, and **Custom Dialogs**  
+**Toast**, **Snackbars**, and **Custom Dialogs**  
 using a **global overlay** with **zero setup**.
 
 Works across all Activities without needing a host Composable.
