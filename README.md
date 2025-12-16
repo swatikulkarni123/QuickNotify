@@ -1,4 +1,4 @@
-## QuickNotify – Jetpack Compose Toast, Snackbar, Dialog & Custom Alert Library
+## Jetpack Compose Toast, Snackbar, Dialog & Custom Alert Library
 
 QuickNotify helps Android developers easily show **Toast**, **Snackbar**, **Dialog**, and **Custom Alerts** in **Jetpack Compose** apps...
 
