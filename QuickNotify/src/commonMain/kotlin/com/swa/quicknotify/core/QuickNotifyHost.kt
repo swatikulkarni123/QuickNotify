@@ -7,50 +7,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 
 /**
- * Cross-platform composable host for QuickNotify notifications.
+ * **Optional** composable host for QuickNotify notifications.
  *
- * Wrap your root composable with this on **iOS**, **Desktop**, and **Web**.
- * On Android it is optional — the library auto-attaches via App Startup.
+ * QuickNotify auto-attaches a global overlay on all platforms — you do NOT need
+ * this composable to use the library. Simply call `QuickNotify.showToast(...)` anywhere.
  *
- * ### Example (all non-Android platforms)
+ * This composable is provided only as an **alternative embedding strategy** if you
+ * prefer to render notifications inside your own composable hierarchy rather than
+ * in a separate overlay. For most apps, you don't need it at all.
+ *
+ * ### Without QuickNotifyHost (recommended — works on all platforms)
+ * ```kotlin
+ * // Android  → auto-attaches via App Startup
+ * // Desktop  → auto-attaches via Swing glass pane
+ * // iOS      → auto-attaches via UIKit child ViewController
+ * // Web      → auto-attaches via canvas overlay
+ *
+ * QuickNotify.showToast("Hello!") // just call it anywhere
+ * ```
+ *
+ * ### With QuickNotifyHost (optional alternative)
  * ```kotlin
  * @Composable
  * fun App() {
  *     QuickNotifyHost {
  *         MyAppContent()
- *     }
- * }
- * ```
- *
- * ### Desktop (main.kt)
- * ```kotlin
- * fun main() = application {
- *     Window(onCloseRequest = ::exitApplication) {
- *         QuickNotifyHost {
- *             App()
- *         }
- *     }
- * }
- * ```
- *
- * ### iOS (MainViewController.kt)
- * ```kotlin
- * fun MainViewController() = ComposeUIViewController {
- *     QuickNotifyHost {
- *         App()
- *     }
- * }
- * ```
- *
- * ### Web (main.kt)
- * ```kotlin
- * fun main() {
- *     onWasmReady {
- *         CanvasBasedWindow("MyApp") {
- *             QuickNotifyHost {
- *                 App()
- *             }
- *         }
  *     }
  * }
  * ```
