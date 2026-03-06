@@ -13,8 +13,8 @@ version = "2.0.0"
 kotlin {
     androidTarget {
         compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
+            compilerOptions.configure {
+                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
             }
         }
     }
@@ -52,6 +52,14 @@ kotlin {
             }
         }
 
+        val iosMain by getting {
+            // ComposeUIViewController + UIKit cinterop provided by KMP/Compose plugin
+        }
+
+        val wasmJsMain by getting {
+            // CanvasBasedWindow from compose.ui (commonMain), DOM APIs from Kotlin/Wasm stdlib
+        }
+
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
@@ -60,6 +68,12 @@ kotlin {
 
 android {
     namespace = "com.swa.quicknotify"
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 
     compileSdk = 36
 
