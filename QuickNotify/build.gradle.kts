@@ -13,8 +13,8 @@ version = "2.0.0"
 kotlin {
     androidTarget {
         compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
+            compilerOptions.configure {
+                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
             }
         }
     }
@@ -60,6 +60,12 @@ kotlin {
 
 android {
     namespace = "com.swa.quicknotify"
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 
     compileSdk = 36
 
