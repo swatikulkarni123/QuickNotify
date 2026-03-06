@@ -52,14 +52,6 @@ kotlin {
             }
         }
 
-        val iosMain by getting {
-            // ComposeUIViewController + UIKit cinterop provided by KMP/Compose plugin
-        }
-
-        val wasmJsMain by getting {
-            // CanvasBasedWindow from compose.ui (commonMain), DOM APIs from Kotlin/Wasm stdlib
-        }
-
         commonTest.dependencies {
             implementation(kotlin("test"))
         }
