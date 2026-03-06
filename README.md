@@ -1,43 +1,38 @@
-## Jetpack Compose Toast, Snackbar, Dialog & Custom Alert Library
+## Compose Multiplatform Toast, Snackbar, Dialog & Custom Alert Library
 
-QuickNotify is a Jetpack Compose library that helps Android developers show
-Toast messages, Snackbars, Dialogs, and custom alerts
-using a global overlay system with zero setup.
-
+QuickNotify is a **Kotlin Multiplatform** library (powered by Compose Multiplatform) for showing
+Toast messages, Snackbars, Dialogs, and custom alerts across **Android, iOS, Desktop, and Web**.
 
 [![](https://jitpack.io/v/swatikulkarni123/QuickNotify.svg)](https://jitpack.io/#swatikulkarni123/QuickNotify)
 
+---
 
-Works across the entire app without requiring a host Composable in each screen.
+## Supported Platforms
+
+| Platform | Support | Setup required |
+|---|---|---|
+| Android | Full | None (auto-init via App Startup) |
+| iOS | Full | Wrap root with `QuickNotifyHost` |
+| Desktop (JVM) | Full | Wrap root with `QuickNotifyHost` |
+| Web (WasmJS) | Full | Wrap root with `QuickNotifyHost` |
 
 ---
 
-## 🚀 **Features**
-- Global overlay via **App Startup**
-- Jetpack Compose UI — Toast, Snackbar, Dialog
-- **Toast** with **text + icon + custom duration**
-- **Snackbar** with ** icon + custom duration **
-- **Dialog** with:
-    - Header image
-    - Title
-    - Body text
-    - Up to **3 customizable buttons**
-    - Optional **top-right close icon**
-    - Rounded or square corners
-- **Custom Overlay** for showing any Composable UI globally:
-    * Full control over content, alignment, and appearance.
-    * Manual or automatic dismissal.
-- Coroutine-based visibility handling
-- Works across entire application
+## Features
+
+- **Kotlin Multiplatform** — one API, all platforms
+- Global overlay — zero setup on Android; one-line wrapper on other platforms
+- **Toast** with text + icon + custom duration
+- **Snackbar** with icon + custom duration
+- **Dialog** with header image, title, body, up to 3 customizable buttons, optional close icon
+- **Custom Overlay** — show any Composable UI globally with full control over content, alignment, and appearance
+- Coroutine-based auto-dismiss
 
 ---
-### How to Display Toast in Jetpack Compose
 
-To display a toast in Jetpack Compose, you can use the QuickNotify library.
+## Installation
 
-## 📦 **Installation**
-
-### **Step 1: Add JitPack**
+### Step 1: Add JitPack
 
 Add in `settings.gradle.kts`:
 
@@ -51,21 +46,76 @@ dependencyResolutionManagement {
 }
 ```
 
-### **Step 2: Add dependency**
+### Step 2: Add dependency
 
 ```gradle
 dependencies {
-    implementation("com.github.swatikulkarni123:QuickNotify:1.0.0")
+    implementation("com.github.swatikulkarni123:QuickNotify:2.0.0")
 }
 ```
 
 ---
 
-# 🛠 Usage
+## Setup
+
+### Android
+
+No setup needed. The library auto-attaches via App Startup. Just call `QuickNotify.showToast(...)` anywhere.
+
+### iOS, Desktop, and Web
+
+Wrap your root composable with `QuickNotifyHost`:
+
+#### iOS (`MainViewController.kt`)
+```kotlin
+import com.swa.quicknotify.core.QuickNotifyHost
+
+fun MainViewController() = ComposeUIViewController {
+    QuickNotifyHost {
+        App()
+    }
+}
+```
+
+#### Desktop (`main.kt`)
+```kotlin
+import com.swa.quicknotify.core.QuickNotifyHost
+
+fun main() = application {
+    Window(onCloseRequest = ::exitApplication, title = "MyApp") {
+        QuickNotifyHost {
+            App()
+        }
+    }
+}
+```
+
+#### Web (`main.kt`)
+```kotlin
+import com.swa.quicknotify.core.QuickNotifyHost
+
+fun main() {
+    onWasmReady {
+        CanvasBasedWindow("MyApp") {
+            QuickNotifyHost {
+                App()
+            }
+        }
+    }
+}
+```
+
+> On Android, `QuickNotifyHost` is optional but can still be used if you prefer the explicit pattern.
 
 ---
 
-## ✅ **1. Toast**
+# Usage
+
+All four notification types work identically on every platform.
+
+---
+
+## 1. Toast
 
 #### Simple toast
 ```kotlin
@@ -83,7 +133,7 @@ QuickNotify.showToast(
 
 ---
 
-## ✅ **2. Snackbar**
+## 2. Snackbar
 
 #### Basic Snackbar
 ```kotlin
@@ -102,17 +152,14 @@ QuickNotify.showSnackbar(
 
 ---
 
-## ✅ **3. Dialog**
+## 3. Dialog
 
-Shows a fully customizable dialog with an optional **top image**,  
-**title**, **body**, and **up to 3 buttons**.
+Shows a fully customizable dialog with an optional top image, title, body, and up to 3 buttons.
 
-### Example
 ```kotlin
 QuickNotify.showDialog(
     title = "Delete Item?",
     body = "This action cannot be undone.",
-    topImage = painterResource(R.drawable.warning),
 
     btn1Text = "Cancel",
     btn1Color = Color.Gray,
@@ -124,46 +171,34 @@ QuickNotify.showDialog(
 )
 ```
 
-### Dialog only close button (no action buttons)
+#### Dialog with close button only (no action buttons)
 ```kotlin
 QuickNotify.showDialog(
     title = "Info",
-    body = "This is message-only dialog."
+    body = "This is a message-only dialog."
 )
 ```
 
-This will show a **top-right close icon** automatically.
+This shows a top-right close icon automatically.
 
+---
 
-## ✨ **4. Custom Overlay / Custom View**
+## 4. Custom Overlay
 
-Use `showOverlay` to display **any Composable UI** in a global overlay. This is ideal for custom alerts, banners, or full-screen loaders.
+Use `showOverlay` to display any Composable UI in a global overlay.
 
-The `content` lambda provides a `dismiss: () -> Unit` function, which you must call to manually dismiss the overlay.
-
-### Example: Custom Success Alert
 ```kotlin
 QuickNotify.showOverlay(
-    overlayAlignment = Alignment.Center, // Position your custom view
-    autoCancel = false, // Set to true to dismiss after default duration (2000ms) or 'duration'
-    content = { dismiss -> // 'dismiss' function to manually close the overlay
-        Card(
-            // ... your custom UI for the alert ...
-            shape = RoundedCornerShape(20.dp),
-            // ...
-        ) {
-            Row(
-                // ... your alert content ...
-            ) {
-                // ...
-                // Example of a dismiss button inside the custom view
+    overlayAlignment = Alignment.Center,
+    autoCancel = false,
+    content = { dismiss ->
+        Card(shape = RoundedCornerShape(20.dp)) {
+            Row {
+                Text("Operation complete!")
                 Icon(
-                    // ...
-                    modifier = Modifier.size(20.dp).clickable {
-                        dismiss() // **Crucial: Call dismiss() to close the overlay**
-                        // You can also show another QuickNotify message here
-                        // QuickNotify.showToast("Clicked") 
-                    }
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    modifier = Modifier.clickable { dismiss() }
                 )
             }
         }
@@ -173,48 +208,33 @@ QuickNotify.showOverlay(
 
 ---
 
-# ⚙️ How it works
+# How it works
 
-- Automatically initializes via `QuickNotifyInitializer`
-- Uses a hidden **global Compose host**
-- Renders Toast/Snackbar/Dialog using:
-    - `QuickNotifyHostInternal`
-    - `QuickNotifyController`
-- Auto-dismiss using coroutine delays
-- Manual dismiss:
-```kotlin
-QuickNotifyController.clear()
-```
+### Android
+- Automatically initializes via `QuickNotifyInitializer` (App Startup)
+- Attaches a hidden `ComposeView` to the first Activity window
 
----
+### iOS / Desktop / Web
+- Notifications are rendered inside `QuickNotifyHost` which wraps your app content
+- Uses Compose state (`QuickNotifyController.currentMessage`) to trigger rendering
 
-## 📁 Icons / Resources
-
-If using a close icon, place it here:
-
-```
-your-library-module/
- └── src/
-      └── main/
-           └── res/
-                └── drawable/
-                     └── ic_close.xml
-```
-
-Use inside dialog:
-```kotlin
-painterResource(R.drawable.ic_close)
-```
+### All platforms
+- `QuickNotifyController` holds shared state (Compose `mutableStateOf`)
+- `QuickNotifyHostInternal` renders the correct UI for Toast / Snackbar / Dialog / Overlay
+- Auto-dismiss uses `kotlinx.coroutines.delay`
+- Manual dismiss: `QuickNotifyController.clear()`
 
 ---
 
-## 📜 License
+## License
 
 MIT
+
 ---
 
 ### Keywords
-Jetpack Compose Toast  
-Compose Snackbar  
-Compose Dialog  
-Android Compose Alert 
+Compose Multiplatform Toast
+Compose Multiplatform Snackbar
+Compose Multiplatform Dialog
+Kotlin Multiplatform Notification
+Android iOS Desktop Web Compose Alert
