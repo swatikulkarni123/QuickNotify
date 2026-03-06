@@ -7,7 +7,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
 import kotlinx.browser.document
 import org.w3c.dom.HTMLCanvasElement
-import org.w3c.dom.HTMLDivElement
 
 /**
  * Web (WasmJS) zero-setup overlay.

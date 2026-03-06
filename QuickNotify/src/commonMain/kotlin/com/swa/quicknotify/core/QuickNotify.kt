@@ -16,14 +16,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Main entry point for QuickNotify. Use this object to show Toast, Snackbar,
  * Dialog, or custom Overlay notifications across Android, iOS, Desktop, and Web.
  *
- * On **Android** the overlay attaches automatically via App Startup — no setup needed.
- *
- * On **iOS**, **Desktop**, and **Web** wrap your root composable with [QuickNotifyHost]:
+ * **Zero setup on every platform** — just call any show*() method directly:
  * ```kotlin
- * QuickNotifyHost {
- *     YourApp()
- * }
+ * QuickNotify.showToast("Hello!")
  * ```
+ * - **Android** — auto-attaches via App Startup + ActivityLifecycleCallbacks
+ * - **Desktop** — auto-attaches as a Swing glass pane on the active JFrame
+ * - **iOS** — auto-attaches as a child UIViewController on the key UIWindow
+ * - **Web** — auto-attaches as a full-screen canvas overlay in the DOM
+ *
+ * [QuickNotifyHost] is available as an optional alternative if you prefer
+ * rendering notifications inside your own composable tree.
  */
 object QuickNotify {
 
