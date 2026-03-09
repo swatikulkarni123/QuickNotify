@@ -35,7 +35,7 @@ internal object QuickNotifyIosOverlay {
         @Suppress("UNCHECKED_CAST")
         val keyWindow = UIApplication.sharedApplication.windows
             .filterIsInstance<UIWindow>()
-            .lastOrNull { it.isKeyWindow() }
+            .lastOrNull { it.isKeyWindow }
             ?: return
 
         val rootVC = keyWindow.rootViewController ?: return

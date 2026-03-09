@@ -125,8 +125,5 @@ object QuickNotify {
     }
 }
 
-/**
- * Called after every show*() call to trigger the Android automatic overlay.
- * On other platforms this is a no-op; the [QuickNotifyHost] composable handles rendering.
- */
+/** Platform-specific hook called after every show*() to trigger the automatic overlay. */
 internal expect fun notifyPlatformOverlay()
