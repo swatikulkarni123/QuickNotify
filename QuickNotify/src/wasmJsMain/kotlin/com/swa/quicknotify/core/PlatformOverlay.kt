@@ -38,16 +38,16 @@ internal object QuickNotifyWebOverlay {
             width = "100%"
             height = "100%"
             zIndex = "9999"
-            pointerEvents = "none" // pass clicks through when no notification is shown
-            background = "transparent"
         }
+        canvas.style.setProperty("pointer-events", "none")
+        canvas.style.setProperty("background", "transparent")
         document.body?.appendChild(canvas)
 
         // Render a Compose scene into the overlay canvas
         CanvasBasedWindow(canvasElementId = "quicknotify-overlay-canvas") {
             val currentContent by content
             // Enable pointer events only while a notification is active
-            canvas.style.pointerEvents = if (currentContent != null) "auto" else "none"
+            canvas.style.setProperty("pointer-events", if (currentContent != null) "auto" else "none")
             currentContent?.invoke()
         }
     }
