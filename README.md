@@ -65,6 +65,24 @@ dependencies {
 }
 ```
 
+> **Important — projects without a WasmJS target**
+>
+> QuickNotify is a Kotlin Multiplatform library that also publishes a `QuickNotify-wasm-js`
+> artifact. If your project does **not** declare a `wasmJs` target, Gradle will fail with a
+> variant resolution error similar to:
+>
+> ```
+> No matching variant of com.github.swatikulkarni123.QuickNotify:QuickNotify-wasm-js:x.x.x
+> ```
+>
+> **Fix:** exclude the wasm-js artifact on the dependency declaration:
+>
+> ```kotlin
+> implementation("com.github.swatikulkarni123:QuickNotify:2.0.0") {
+>     exclude(group = "com.github.swatikulkarni123.QuickNotify", module = "QuickNotify-wasm-js")
+> }
+> ```
+
 ---
 
 # Usage
